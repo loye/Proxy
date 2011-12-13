@@ -1,2 +1,2 @@
 # git ignore file
-\Proxy\bin\*
+#Proxy/bin/*
