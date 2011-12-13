@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns="http://configuration.proxy.loye">
+  <listeners>
+    <listener type="Http" host="localhost" port="1002" proxyName="fiddler" providerName="default">
+    <!--<proxy type="Http" host="127.0.0.1" port="8888" />-->
+    </listener>
+    <listener type="Http" host="127.0.0.1" port="1003" />
+  </listeners>
+  <proxies>
+    <proxy name="fiddler" type="Http" host="127.0.0.1" port="8888" />
+  </proxies>
+  <providers>
+    <provider name="default" type="Direct" />
+    <provider name="myProxy" type="Fetch">
+      <parameter name="Authorization" value="ABCDE" />
+    </provider>
+    <provider name="ge" type="GoogleEngine" url="" />
+  </providers>
+  <dns.lookup>
+    <item host="adgeo.163.com" ip="123.58.176.138" />
+    <item host="g.163.com" ip="123.58.176.140" />
+    <item host="163.wrating.com" ip="202.108.255.5" />
+    <item host="c.microsoft.com" ip="65.55.57.252" />
+  </dns.lookup>
+</configuration>
