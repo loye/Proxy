@@ -1,0 +1,5 @@
+E:\Projects\NET4\Proxy\Proxy\bin\Debug\Loye.Proxy.exe
+E:\Projects\NET4\Proxy\Proxy\bin\Debug\Loye.Proxy.pdb
+E:\Projects\NET4\Proxy\Proxy\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Projects\NET4\Proxy\Proxy\obj\x86\Debug\Loye.Proxy.exe
+E:\Projects\NET4\Proxy\Proxy\obj\x86\Debug\Loye.Proxy.pdb
