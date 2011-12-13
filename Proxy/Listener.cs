@@ -24,6 +24,7 @@ namespace Loye.Proxy
 
         
 
+
         private Socket _listenSocket;
 
         private SynchronizedCollection<IClient> _clients;
