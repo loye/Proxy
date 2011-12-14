@@ -8,6 +8,14 @@ namespace Loye.Proxy
 {
     public interface IListener : IDisposable
     {
+        #region Properties
+
+        IProvider Provider { get; set; }
+
+        IPEndPoint ProxyEndPoint { get; set; }
+
+        #endregion
+
         #region Methods
 
         void Start();

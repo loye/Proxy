@@ -20,15 +20,17 @@ namespace Loye.Proxy
 
         private readonly int _port;
 
-        private readonly IProvider _provider;
-
-        private readonly IPEndPoint _proxyEndPoint;
-
         private Socket _listenSocket;
 
         private SynchronizedCollection<IClient> _clients;
 
         #endregion
+
+
+        public IProvider Provider { get; set; }
+
+        public IPEndPoint ProxyEndPoint { get; set; }
+
 
         public Listener(ListenerType type, string host, int port)
         {

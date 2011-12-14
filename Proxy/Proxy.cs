@@ -27,7 +27,7 @@ namespace Loye.Proxy
             Configuration.Listeners.ListenerList
                 .ForEach(l =>
                 {
-                    Listeners.Add(CreateListener(l.Type, l.Host, l.Port));
+                    Listeners.Add(CreateListener(l));
                 });
 
             RecycleThread = new Thread(Recycle);
@@ -54,17 +54,24 @@ namespace Loye.Proxy
             );
         }
 
-        private static IListener CreateListener(ListenerType type, string host, int port)
+        private static IListener CreateListener(ListenerItem listenerItem)
         {
-            switch (type)
+            IListener listener;
+            switch (listenerItem.Type)
             {
                 case ListenerType.Http:
-                    return new HttpListener(host, port);
-                case ListenerType.Sock:
-                    return null;
                 default:
-                    return new HttpListener(host, port);
+                    listener = new HttpListener(listenerItem.Host, listenerItem.Port);
+                    break;
             }
+            var provider =
+                listenerItem.Provider
+                ?? Configuration.Providers.ProviderList.Find(p => p.Name == listenerItem.ProviderName);
+            var proxy =
+                listenerItem.Proxy
+                ?? Configuration.Proxies.ProxyList.Find(p => p.Name == listenerItem.ProxyName);
+            //TODO
+            return listener;
         }
 
         private static void Recycle()

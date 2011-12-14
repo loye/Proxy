@@ -47,6 +47,12 @@ namespace Loye.Proxy.Configuration
 
         [XmlAttribute(AttributeName = "providerName")]
         public string ProviderName { get; set; }
+
+        [XmlElement(ElementName = "proxy")]
+        public ProxyItem Proxy { get; set; }
+
+        [XmlElement(ElementName = "provider")]
+        public ProviderItem Provider { get; set; }
     }
 
     #endregion
