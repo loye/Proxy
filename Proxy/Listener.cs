@@ -22,8 +22,7 @@ namespace Loye.Proxy
 
         private readonly IProvider _provider;
 
-        
-
+        private readonly IPEndPoint _proxyEndPoint;
 
         private Socket _listenSocket;
 
