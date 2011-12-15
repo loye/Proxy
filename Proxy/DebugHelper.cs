@@ -1,33 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Collections.Concurrent;
 using System.Net.Sockets;
 
 namespace Loye.Proxy
 {
-    internal static class Helper
+    public static class DebugHelper
     {
-        private static ConcurrentQueue<KeyValuePair<ConsoleColor, string>> _printerQueue = new ConcurrentQueue<KeyValuePair<ConsoleColor, string>>();
+        private static ConcurrentQueue<MessageItem> _printerQueue = new ConcurrentQueue<MessageItem>();
 
         private static readonly ConsoleColor DEFAULT_FOREGROUND_COLOR = Console.ForegroundColor;
 
         public static void Debug(string message, ConsoleColor? color = null)
         {
-            _printerQueue.Enqueue(new KeyValuePair<ConsoleColor, string>(color ?? DEFAULT_FOREGROUND_COLOR, message));
+            _printerQueue.Enqueue(new MessageItem() { Color = color ?? DEFAULT_FOREGROUND_COLOR, Message = message });
         }
 
         public static void Print()
         {
-            KeyValuePair<ConsoleColor, string> item;
+            MessageItem item;
             while (true)
             {
                 if (_printerQueue.TryDequeue(out item))
                 {
-                    Console.ForegroundColor = item.Key;
-                    Console.WriteLine(item.Value);
+                    Console.ForegroundColor = item.Color;
+                    Console.WriteLine(item.Message);
                     Console.ForegroundColor = DEFAULT_FOREGROUND_COLOR;
                 }
                 else
@@ -54,5 +51,12 @@ namespace Loye.Proxy
                 PublishException(ex.InnerException, "Inner Exception:");
             }
         }
+    }
+
+    internal struct MessageItem
+    {
+        public ConsoleColor Color;
+
+        public string Message;
     }
 }

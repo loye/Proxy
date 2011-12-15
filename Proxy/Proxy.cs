@@ -19,7 +19,7 @@ namespace Loye.Proxy
         {
             Listeners = new List<IListener>();
 
-            new Thread(Helper.Print).Start();
+            new Thread(DebugHelper.Print).Start();
 
             // Load configuration
             ConfigManager.LoadConfiguration();
@@ -27,7 +27,7 @@ namespace Loye.Proxy
             Configuration.Listeners.ListenerList
                 .ForEach(l =>
                 {
-                    Listeners.Add(CreateListener(l));
+                    Listeners.Add(Factory.CreateListener(l, Configuration));
                 });
 
             RecycleThread = new Thread(Recycle);
@@ -38,7 +38,7 @@ namespace Loye.Proxy
             Listeners.ForEach(l =>
                 {
                     l.Start();
-                    Helper.Debug("Start listen: " + l.ToString());
+                    DebugHelper.Debug("Start listen: " + l.ToString());
                 }
             );
             RecycleThread.Start();
@@ -49,29 +49,9 @@ namespace Loye.Proxy
             Listeners.ForEach(l =>
                 {
                     l.Stop();
-                    Helper.Debug("Stop listen: " + l.ToString());
+                    DebugHelper.Debug("Stop listen: " + l.ToString());
                 }
             );
-        }
-
-        private static IListener CreateListener(ListenerItem listenerItem)
-        {
-            IListener listener;
-            switch (listenerItem.Type)
-            {
-                case ListenerType.Http:
-                default:
-                    listener = new HttpListener(listenerItem.Host, listenerItem.Port);
-                    break;
-            }
-            var provider =
-                listenerItem.Provider
-                ?? Configuration.Providers.ProviderList.Find(p => p.Name == listenerItem.ProviderName);
-            var proxy =
-                listenerItem.Proxy
-                ?? Configuration.Proxies.ProxyList.Find(p => p.Name == listenerItem.ProxyName);
-            //TODO
-            return listener;
         }
 
         private static void Recycle()

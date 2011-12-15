@@ -86,7 +86,7 @@ namespace Loye.Proxy
             }
             catch (Exception ex)
             {
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
 
             TClient client = new TClient();
@@ -117,7 +117,11 @@ namespace Loye.Proxy
 
         public override string ToString()
         {
-            return string.Format("{0} [{1}:{2}]", this._listenerType, this._host, this._port);
+            return string.Format("{0} [{1}:{2}] {3}",
+                this._listenerType,
+                this._host,
+                this._port,
+                this.Provider.GetType().Name);
         }
 
         public void RecycleClients()
@@ -131,7 +135,7 @@ namespace Loye.Proxy
                     count++;
                 }
             }
-            Helper.Debug(string.Format("Recycled clients: {0}; Clients count: {1}", count, _clients.Count));
+            DebugHelper.Debug(string.Format("Recycled clients: {0}; Clients count: {1}", count, _clients.Count));
         }
 
         public void Dispose()
@@ -144,7 +148,7 @@ namespace Loye.Proxy
                 }
                 catch (Exception ex)
                 {
-                    Helper.PublishException(ex);
+                    DebugHelper.PublishException(ex);
                 }
                 _listenSocket.Close();
                 _listenSocket = null;

@@ -39,7 +39,7 @@ namespace Loye.Proxy
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
         }
 
@@ -61,7 +61,7 @@ namespace Loye.Proxy
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
             Dispose();
         }
@@ -84,7 +84,7 @@ namespace Loye.Proxy
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
             Dispose();
         }
@@ -103,7 +103,7 @@ namespace Loye.Proxy
                         {
                             string respose = Encoding.ASCII.GetString(RemoteBuffer, 0, length);
                             int sp = respose.IndexOf("\r\n");
-                            Helper.Debug(respose.Substring(0, sp > 0 ? sp + 2 : 1024), ConsoleColor.DarkYellow);
+                            DebugHelper.Debug(respose.Substring(0, sp > 0 ? sp + 2 : 1024), ConsoleColor.DarkYellow);
                         }
                         ClientSocket.BeginSend(RemoteBuffer, 0, length, SocketFlags.None, this.OnClientSent, ClientSocket);
                         return;
@@ -113,7 +113,7 @@ namespace Loye.Proxy
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
             Dispose();
         }
@@ -136,7 +136,7 @@ namespace Loye.Proxy
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
             Dispose();
         }
@@ -151,7 +151,7 @@ namespace Loye.Proxy
                 }
                 catch (Exception ex)
                 {
-                    Helper.PublishException(ex);
+                    DebugHelper.PublishException(ex);
                 }
                 socket.Close();
                 socket.Dispose();

@@ -42,7 +42,7 @@ namespace Loye.Proxy
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
         }
 
@@ -56,7 +56,7 @@ namespace Loye.Proxy
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
 
             if (length > 0)
@@ -76,7 +76,7 @@ namespace Loye.Proxy
                     catch (Exception ex)
                     {
                         Dispose();
-                        Helper.PublishException(ex);
+                        DebugHelper.PublishException(ex);
                     }
                 }
             }
@@ -160,7 +160,7 @@ namespace Loye.Proxy
                 }
                 return true;
             }
-            Helper.Debug("Invalid Header");
+            DebugHelper.Debug("Invalid Header");
             return false;
         }
 
@@ -186,7 +186,7 @@ namespace Loye.Proxy
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
         }
 
@@ -233,14 +233,14 @@ namespace Loye.Proxy
                 else
                 {
                     string request = RebuildQuery();
-                    Helper.Debug(request.Substring(0, request.IndexOf("\r\n") + 2), ConsoleColor.Green);
+                    DebugHelper.Debug(request.Substring(0, request.IndexOf("\r\n") + 2), ConsoleColor.Green);
                     RemoteSocket.BeginSend(Encoding.ASCII.GetBytes(request), 0, request.Length, SocketFlags.None, this.OnRequestSent, RemoteSocket);
                 }
             }
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
         }
 
@@ -254,7 +254,7 @@ namespace Loye.Proxy
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
             if (length > 0)
             {
@@ -276,7 +276,7 @@ namespace Loye.Proxy
 
         private void SendBadRequestPage(string query)
         {
-            Helper.Debug("Bad Request\n" + query, ConsoleColor.Red);
+            DebugHelper.Debug("Bad Request\n" + query, ConsoleColor.Red);
             string respose = ErrorPages.BAD_REQUEST;
             SendErrorPage(respose);
         }
@@ -290,7 +290,7 @@ namespace Loye.Proxy
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
         }
 
@@ -303,7 +303,7 @@ namespace Loye.Proxy
             catch (Exception ex)
             {
                 Dispose();
-                Helper.PublishException(ex);
+                DebugHelper.PublishException(ex);
             }
             Dispose();
         }

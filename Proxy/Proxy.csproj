@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Loye.Proxy</RootNamespace>
-    <AssemblyName>Loye.Proxy</AssemblyName>
+    <AssemblyName>Proxy</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -69,18 +69,19 @@
     <Compile Include="Client.cs" />
     <Compile Include="Configuration\ConfigManager.cs" />
     <Compile Include="Configuration\_ConfigXml.cs" />
+    <Compile Include="Factory.cs" />
     <Compile Include="Http\Utility.cs" />
-    <Compile Include="IListener.cs">
+    <Compile Include="Interfaces\IListener.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Providers\DirectAccessProvider.cs" />
     <Compile Include="Providers\GoogleEngineProvider.cs" />
-    <Compile Include="Providers\IProvider.cs" />
+    <Compile Include="Interfaces\IProvider.cs" />
     <Compile Include="_Extentions.cs" />
-    <Compile Include="IClient.cs" />
+    <Compile Include="Interfaces\IClient.cs" />
     <Compile Include="_Constants.cs" />
     <Compile Include="_Caches.cs" />
-    <Compile Include="Helper.cs" />
+    <Compile Include="DebugHelper.cs" />
     <Compile Include="Http\HttpClient.cs" />
     <Compile Include="Http\HttpListener.cs" />
     <Compile Include="Listener.cs" />
