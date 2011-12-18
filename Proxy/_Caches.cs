@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 
 namespace Loye.Proxy
 {
@@ -20,18 +21,24 @@ namespace Loye.Proxy
             {
                 return null;
             }
+
             DnsValue value;
             if (_dnsDictionary.TryGetValue(hostNameOrAddress, out value)
                 && (value.ExpireTime > DateTime.Now || value.ExpireTime == DateTime.MinValue))
             {
                 return value.Address;
             }
+
             IPAddress address = null;
+            if (IPAddress.TryParse(hostNameOrAddress, out address))
+            {
+                return address;
+            }
+
             try
             {
                 address = Dns.GetHostEntry(hostNameOrAddress).AddressList
-                    .Where(a => a.AddressFamily == AddressFamily.InterNetwork)
-                    .First();
+                    .First(a => a.AddressFamily == AddressFamily.InterNetwork); //ipv4 only
             }
             catch (SocketException)
             {

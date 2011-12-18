@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Loye.Proxy
 {
-    public interface IProvider
+    class HttpResponse
     {
     }
 }

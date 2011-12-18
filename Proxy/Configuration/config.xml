@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns="http://configuration.proxy.loye">
   <listeners>
-    <listener type="Http" host="localhost" port="1002" proxyName="fiddler" providerName="default">
+    <listener type="Http" host="localhost" port="1002" proxyName="" providerName="default">
     <!--<proxy type="Http" host="127.0.0.1" port="8888" />-->
     </listener>
-    <listener type="Http" host="127.0.0.1" port="1003" />
+    <!--<listener type="Http" host="127.0.0.1" port="1003" />-->
   </listeners>
   <proxies>
     <proxy name="fiddler" type="Http" host="127.0.0.1" port="8888" />

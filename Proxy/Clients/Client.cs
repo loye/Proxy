@@ -8,6 +8,8 @@ namespace Loye.Proxy
 {
     public abstract class Client : IClient
     {
+        public IProvider Provider { get; set; }
+
         public Socket ClientSocket { get; set; }
 
         public Socket RemoteSocket { get; set; }
@@ -27,7 +29,10 @@ namespace Loye.Proxy
             ExpireTime = DateTime.Now.AddSeconds(ListenerConfig.TIME_OUT_SECONDS);
         }
 
-        public abstract void StartHandshake();
+        public abstract void Start();
+
+
+
 
         public void StartRelay()
         {
@@ -140,6 +145,7 @@ namespace Loye.Proxy
             }
             Dispose();
         }
+
 
         private void ReleaseSocket(Socket socket)
         {

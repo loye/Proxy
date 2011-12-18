@@ -18,7 +18,7 @@ namespace Loye.Proxy
         internal const int TIME_OUT_SECONDS = 300;
     }
 
-    internal static class ErrorPages
+    internal static class ResponsePages
     {
         internal const string HTTPS_CONNECTED = "{0} 200 Connection established\r\nProxy-Agent: Loye's Proxy Server\r\n\r\n";
         internal const string DNS_LOOKUP_FAILED = "HTTP/1.1 502 DNS Lookup Failed\r\nContent-Type: text/html; charset=UTF-8\r\nConnection: close\r\n\r\nLoye's Proxy: DNS Lookup for {0} failed. No such host is known\r\n";

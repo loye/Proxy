@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
 namespace Loye.Proxy
 {
@@ -14,7 +13,7 @@ namespace Loye.Proxy
 
         private readonly ListenerType _listenerType;
 
-        private readonly IPAddress _address;
+        private readonly IPEndPoint _listenerEndPoint;
 
         private readonly string _host;
 
@@ -28,8 +27,6 @@ namespace Loye.Proxy
 
 
         public IProvider Provider { get; set; }
-
-        public IPEndPoint ProxyEndPoint { get; set; }
 
 
         public Listener(ListenerType type, string host, int port)
@@ -48,17 +45,17 @@ namespace Loye.Proxy
                 throw new ArgumentOutOfRangeException("port[" + port + "] out of range.", "port");
             }
 
-            this._listenerType = type;
-            this._address = address;
-            this._host = host;
-            this._port = port;
-            this._clients = new SynchronizedCollection<IClient>();
+            _listenerType = type;
+            _listenerEndPoint = new IPEndPoint(address, port);
+            _host = host;
+            _port = port;
+            _clients = new SynchronizedCollection<IClient>();
         }
 
         public void Start()
         {
-            _listenSocket = new Socket(_address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            _listenSocket.Bind(new IPEndPoint(_address, _port));
+            _listenSocket = new Socket(_listenerEndPoint.Address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            _listenSocket.Bind(_listenerEndPoint);
             _listenSocket.Listen(ListenerConfig.DEFAULT_BACKLOG);
             _listenSocket.BeginAccept(this.OnAccept, _listenSocket);
         }
@@ -75,13 +72,12 @@ namespace Loye.Proxy
             this.Start();
         }
 
-        private void OnAccept(IAsyncResult ar)
+        protected void OnAccept(IAsyncResult ar)
         {
             Socket acceptedSocket = null;
             try
             {
                 acceptedSocket = _listenSocket.EndAccept(ar);
-                // Begin accept next connection
                 _listenSocket.BeginAccept(this.OnAccept, _listenSocket);
             }
             catch (Exception ex)
@@ -92,8 +88,9 @@ namespace Loye.Proxy
             TClient client = new TClient();
             client.ClientSocket = acceptedSocket;
             client.Destroyer = c => _clients.Remove(c);
+            client.Provider = this.Provider;
             _clients.Add(client);
-            client.StartHandshake();
+            client.Start();
         }
 
         public string GetClientsDebugString()

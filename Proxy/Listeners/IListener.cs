@@ -12,8 +12,6 @@ namespace Loye.Proxy
 
         IProvider Provider { get; set; }
 
-        IPEndPoint ProxyEndPoint { get; set; }
-
         #endregion
 
         #region Methods

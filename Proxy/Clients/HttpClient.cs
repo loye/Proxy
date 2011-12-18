@@ -32,9 +32,14 @@ namespace Loye.Proxy
 
         private Dictionary<string, string> headerFields;
 
-        public override void StartHandshake()
+        public HttpClient()
+            : base()
         {
             httpQuery = new StringBuilder();
+        }
+
+        public override void Start()
+        {
             try
             {
                 ClientSocket.BeginReceive(ClientBuffer, 0, ClientBuffer.Length, SocketFlags.None, this.OnReceiveQuery, ClientSocket);
@@ -101,7 +106,7 @@ namespace Loye.Proxy
             {
                 int contentLength;
                 return (int.TryParse(headerFields["Content-Length"], out contentLength)
-                    && query.Length >= blankLineIndex + 6 + contentLength);
+                    && query.Length >= blankLineIndex + 4 + contentLength);
             }
             else
             {
@@ -166,22 +171,24 @@ namespace Loye.Proxy
 
         private void ProcessQuery(string query)
         {
-            IPAddress address = DnsCache.GetIPAddress(this.host);
-            if (address == null)
-            {
-                this.SendDnsLookupFailedPage(this.host);
-                return;
-            }
-            IPEndPoint remoteEndPoint = new IPEndPoint(address, this.port);
-            RemoteSocket = new Socket(remoteEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            if (this.headerFields.ContainsKey("Proxy-Connection")
-                && string.Equals(this.headerFields["Proxy-Connection"], "keep-alive", StringComparison.OrdinalIgnoreCase))
-            {
-                RemoteSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-            }
             try
             {
+                IPEndPoint remoteEndPoint = Provider.GetRemoteEndPoint(this.host, this.port);
+
+                RemoteSocket = new Socket(remoteEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+                if (this.headerFields.ContainsKey("Proxy-Connection")
+                    && string.Equals(this.headerFields["Proxy-Connection"], "keep-alive", StringComparison.OrdinalIgnoreCase))
+                {
+                    RemoteSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+                }
+
                 RemoteSocket.BeginConnect(remoteEndPoint, this.OnConnected, RemoteSocket);
+            }
+            catch (DnsLookupFailedException ex)
+            {
+                this.SendDnsLookupFailedPage(this.host);
+                DebugHelper.PublishException(ex);
             }
             catch (Exception ex)
             {
@@ -227,7 +234,7 @@ namespace Loye.Proxy
                 RemoteSocket.EndConnect(ar);
                 if (this.requestType == "CONNECT")
                 {
-                    string respose = string.Format(ErrorPages.HTTPS_CONNECTED, this.httpVersion);
+                    string respose = string.Format(ResponsePages.HTTPS_CONNECTED, this.httpVersion);
                     ClientSocket.BeginSend(Encoding.ASCII.GetBytes(respose), 0, respose.Length, SocketFlags.None, this.OnRequestSent, ClientSocket);
                 }
                 else
@@ -270,14 +277,14 @@ namespace Loye.Proxy
 
         private void SendDnsLookupFailedPage(string hostName)
         {
-            string respose = string.Format(ErrorPages.DNS_LOOKUP_FAILED, hostName);
+            string respose = string.Format(ResponsePages.DNS_LOOKUP_FAILED, hostName);
             SendErrorPage(respose);
         }
 
         private void SendBadRequestPage(string query)
         {
             DebugHelper.Debug("Bad Request\n" + query, ConsoleColor.Red);
-            string respose = ErrorPages.BAD_REQUEST;
+            string respose = ResponsePages.BAD_REQUEST;
             SendErrorPage(respose);
         }
 

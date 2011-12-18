@@ -8,6 +8,8 @@ namespace Loye.Proxy
 {
     public interface IClient : IDisposable
     {
+        IProvider Provider { get; set; }
+
         Socket ClientSocket { get; set; }
 
         Socket RemoteSocket { get; set; }
@@ -16,6 +18,6 @@ namespace Loye.Proxy
 
         DateTime ExpireTime { get; }
 
-        void StartHandshake();
+        void Start();
     }
 }

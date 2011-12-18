@@ -27,16 +27,16 @@ namespace Loye.Proxy
                 listenerItem.Proxy
                 ?? configuration.Proxies.ProxyList.Find(p => p.Name == listenerItem.ProxyName);
 
-            listener.Provider = Factory.CreateProvider(providerConfig);
-            listener.ProxyEndPoint =
+            var proxy =
                 proxyConfig != null
                 ? new IPEndPoint(DnsCache.GetIPAddress(proxyConfig.Host), proxyConfig.Port)
                 : null;
+            listener.Provider = Factory.CreateProvider(providerConfig, proxy);
 
             return listener;
         }
 
-        public static IProvider CreateProvider(ProviderItem providerConfig)
+        public static IProvider CreateProvider(ProviderItem providerConfig, IPEndPoint proxy)
         {
             IProvider provider = null;
 
@@ -45,7 +45,7 @@ namespace Loye.Proxy
                 switch (providerConfig.Type)
                 {
                     case "GoogleEngine":
-                        provider = new GoogleEngineProvider();
+                        //provider = new GoogleEngineProvider();
                         break;
                     case "Direct":
                     default:
@@ -55,7 +55,7 @@ namespace Loye.Proxy
 
             if (provider == null)
             {
-                provider = new DirectAccessProvider();
+                provider = new DirectAccessProvider(proxy);
             }
 
             return provider;
