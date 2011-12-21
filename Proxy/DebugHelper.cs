@@ -13,7 +13,18 @@ namespace Loye.Proxy
 
         public static void Debug(string message, ConsoleColor? color = null)
         {
-            _printerQueue.Enqueue(new MessageItem() { Color = color ?? DEFAULT_FOREGROUND_COLOR, Message = message });
+            if (message != null)
+            {
+                _printerQueue.Enqueue(new MessageItem() { Color = color ?? DEFAULT_FOREGROUND_COLOR, Message = message });
+            }
+        }
+
+        public static void Debug(object message, ConsoleColor? color = null)
+        {
+            if (message != null)
+            {
+                DebugHelper.Debug(message.ToString(), color);
+            }
         }
 
         public static void Print()
@@ -36,12 +47,12 @@ namespace Loye.Proxy
 
         public static void PublishException(Exception ex, string message = null)
         {
-            var color = ConsoleColor.Yellow;
+            var color = ConsoleColor.Red;
             message = string.IsNullOrEmpty(message) ? null : message + " ";
             string exMessage = string.Format("{0}\n{1}\n{2}", ex.Message, ex.Source, ex.StackTrace);
-            if (!(ex is SocketException))
+            if (ex is SocketException)
             {
-                color = ConsoleColor.Red;
+                color = ConsoleColor.Yellow;
             }
             Debug(string.Format("{0}{1}\n{2}\n", message, ex.GetType().ToString(), exMessage), color);
 

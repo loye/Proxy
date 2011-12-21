@@ -8,6 +8,7 @@
   </listeners>
   <proxies>
     <proxy name="fiddler" type="Http" host="127.0.0.1" port="8888" />
+    <proxy name="ga" type="Http" host="127.0.0.1" port="1001" />
   </proxies>
   <providers>
     <provider name="default" type="Direct" />

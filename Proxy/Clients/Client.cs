@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace Loye.Proxy
 {
@@ -167,6 +168,7 @@ namespace Loye.Proxy
 
         public void Dispose()
         {
+            Thread.Sleep(1);
             ReleaseSocket(ClientSocket);
             ReleaseSocket(RemoteSocket);
             if (this.Destroyer != null)

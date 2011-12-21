@@ -8,6 +8,8 @@ namespace Loye.Proxy
     {
         static void Main(string[] args)
         {
+            Console.CursorVisible = false;
+
             Proxy.Start();
 
             Debug();

@@ -13,8 +13,8 @@ namespace Loye.Proxy
         internal const string DEFAULT_HOST = "127.0.0.1";
         internal const int DEFAULT_PORT = 8008;
         internal const int DEFAULT_BACKLOG = 100;
-        internal const int CLIENT_BUFFER_SIZE = 8192;
-        internal const int REMOTE_BUFFER_SIZE = 8192;
+        internal const int CLIENT_BUFFER_SIZE = 1024 * 2;
+        internal const int REMOTE_BUFFER_SIZE = 1024 * 4;
         internal const int TIME_OUT_SECONDS = 300;
     }
 

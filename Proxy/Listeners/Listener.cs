@@ -77,8 +77,8 @@ namespace Loye.Proxy
             Socket acceptedSocket = null;
             try
             {
-                acceptedSocket = _listenSocket.EndAccept(ar);
                 _listenSocket.BeginAccept(this.OnAccept, _listenSocket);
+                acceptedSocket = _listenSocket.EndAccept(ar);
             }
             catch (Exception ex)
             {

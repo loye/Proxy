@@ -185,10 +185,10 @@ namespace Loye.Proxy
 
                 RemoteSocket.BeginConnect(remoteEndPoint, this.OnConnected, RemoteSocket);
             }
-            catch (DnsLookupFailedException ex)
+            catch (DnsLookupFailedException)
             {
                 this.SendDnsLookupFailedPage(this.host);
-                DebugHelper.PublishException(ex);
+                //DebugHelper.PublishException(ex);
             }
             catch (Exception ex)
             {
