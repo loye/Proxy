@@ -1,4 +1,4 @@
 # git ignore file
 Proxy/bin/*
 Proxy/obj/*
-Proxy.suo
+*.suo
